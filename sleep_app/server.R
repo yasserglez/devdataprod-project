@@ -15,5 +15,12 @@ sleep_data <- read_delim("SleepBot.csv", ",",  quote = "'", col_types = "cc_c_")
               duration = sum(duration)) %>%
     select(sleep_time, duration)
 
-shinyServer(function(input, output) {
+# Precompute information used in the plots
+sleep_data <- sleep_data %>%
+    mutate(date = as.Date(sleep_time))
+
+shinyServer(function(input, output, session) {
+    updateDateRangeInput(session, "dateRange",
+                         min = min(sleep_data$date), max = max(sleep_data$date),
+                         start = min(sleep_data$date), end = max(sleep_data$date))
 })
