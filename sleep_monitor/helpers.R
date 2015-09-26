@@ -2,15 +2,9 @@ library("readr")
 library("dplyr")
 library("lubridate")
 
-# https://stat.ethz.ch/pipermail/r-devel/2008-April/048914.html
-srcfile <- (function() {
-    attr(body(sys.function()), "srcfile")
-})()$filename
-
 # Load and tidy the data exported from https://www.mysleepbot.com
 
-csv_file <- file.path(dirname(srcfile), "SleepBot.csv")
-sleep_data <- read_delim(csv_file, ",",  quote = "'", col_types = "cc_c_") %>%
+sleep_data <- read_delim(sleep_data_csv, ",",  quote = "'", col_types = "cc_c_") %>%
     mutate(# SleepBot' Date is when the entry was created, but I want the clock-in date.
         sleep_time = mdy_hm(paste(Date, `Sleep Time`)) - days(1),
         duration = as.interval(hm(Duration), sleep_time)) %>%

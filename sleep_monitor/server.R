@@ -2,7 +2,8 @@ library("shiny")
 library("ggplot2")
 library("scales")
 
-source("sleep_data.R")
+sleep_data_csv <- "data/SleepBot.csv"
+source("helpers.R", local = TRUE)
 
 shinyServer(function(input, output, session) {
     updateDateRangeInput(session, "dates",
