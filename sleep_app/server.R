@@ -3,6 +3,7 @@ library("readr")
 library("dplyr")
 library("lubridate")
 library("ggplot2")
+library("scales")
 
 # Load and tidy the data exported from https://www.mysleepbot.com:
 
@@ -24,6 +25,8 @@ max_date <- max(as.Date(sleep_data$sleep_time))
 
 sleep_data <- sleep_data %>%
     mutate(date = as.Date(sleep_time), # just the date
+           wake_time = as.POSIXct(format(sleep_time + duration, "%H:%M"), format = "%H:%M", tz = "UTC"),
+           sleep_time = as.POSIXct(format(sleep_time, "%H:%M"), format = "%H:%M", tz = "UTC"),
            duration = duration / 60 / 60) %>% # convert to hours
     # Add NA entries for the days without data.
     right_join(data.frame(date = seq(min_date, max_date, by = "1 day")), by = "date")
@@ -42,5 +45,19 @@ shinyServer(function(input, output, session) {
     output$duration_plot <- renderPlot({
         ggplot(plot_data(), aes(x = date, y = duration)) +
             geom_line()
+    })
+
+    output$sleep_plot <- renderPlot({
+        ggplot(sleep_data, aes(x = sleep_time)) +
+            geom_histogram(binwidth = 60 * 60) +
+            scale_x_datetime(breaks = date_breaks("1 hours"),
+                             labels = date_format("%l%p", tz = "UTC"))
+    })
+
+    output$wake_plot <- renderPlot({
+        ggplot(sleep_data, aes(x = wake_time)) +
+            geom_histogram(binwidth = 60 * 60) +
+            scale_x_datetime(breaks = date_breaks("1 hours"),
+                             labels = date_format("%l%p", tz = "UTC"))
     })
 })

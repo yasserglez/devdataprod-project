@@ -1,16 +1,20 @@
 library("shiny")
 library("shinydashboard")
 
-plots_tab <- tabItem(tabName = "plots", fluidRow(
-    box(title = "Sleep Duration", width = 12, collapsible = TRUE, status = "primary", plotOutput("duration_plot"))
-))
+plots_tab <- tabItem(tabName = "plots",
+    fluidRow(box(title = "Sleep Duration", width = 12, plotOutput("duration_plot"))),
+    fluidRow(
+        box(title = "Sleep Time Histogram", width = 6, plotOutput("sleep_plot")),
+        box(title = "Wake Time Histogram", width = 6, plotOutput("wake_plot"))
+    )
+)
 
 docs_tab <- tabItem(tabName = "docs", fluidRow(
-    box(title = "Documentation", width = 12, status = "primary")
+    box(title = "Documentation", width = 12)
 ))
 
 dashboardPage(
-    dashboardHeader(title = "Track Your Sleep!"),
+    dashboardHeader(title = "Sleep Tracking"),
     dashboardSidebar(
         sidebarMenu(
             menuItem("Plots", tabName = "plots", icon = icon("area-chart")),
