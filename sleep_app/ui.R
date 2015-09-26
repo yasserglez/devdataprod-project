@@ -1,28 +1,32 @@
 library("shiny")
 library("shinydashboard")
 
-plots_tab <- tabItem(tabName = "plots",
-    fluidRow(box(title = "Sleep Duration", width = 12, plotOutput("duration_plot"))),
-    fluidRow(
-        box(title = "Sleep Time Histogram", width = 6, plotOutput("sleep_plot")),
-        box(title = "Wake Time Histogram", width = 6, plotOutput("wake_plot"))
-    )
-)
-
-docs_tab <- tabItem(tabName = "docs", fluidRow(
-    box(title = "Documentation", width = 12)
-))
-
 dashboardPage(
     dashboardHeader(title = "Sleep Tracking"),
     dashboardSidebar(
         sidebarMenu(
-            menuItem("Plots", tabName = "plots", icon = icon("area-chart")),
             dateRangeInput("dates", label = "Date Range:", startview = "year"),
-            menuItem("Documentation", tabName = "docs", icon = icon("book")),
             menuItem("Source Code", icon = icon("github"),
                      href = "https://github.com/yasserglez/devdataprod-project")
         )
     ),
-    dashboardBody(tabItems(plots_tab, docs_tab))
+    dashboardBody(
+        fluidRow(
+            box(title = "Welcome", width = 12, collapsible = TRUE,
+                HTML(paste('<p>This <a href="http://shiny.rstudio.com/">Shiny</a> app',
+                           'allows you to analyze your sleeping pattern.')),
+                p(paste("The first plot shows each day's sleep duration, along with",
+                        "a regression line and a 95% confidence interval. The second",
+                        "and third plots are histograms of the sleep and wake time.",
+                        "You can use the date picker widgets located in the sidebar",
+                        "to select different date ranges.")),
+                HTML(paste('The sample data are my own records, collected the past year using',
+                           '<a href="https://mysleepbot.com/">SleepBot</a>.')))
+        ),
+        fluidRow(box(title = "Sleep Duration", width = 12, plotOutput("duration_plot"))),
+        fluidRow(
+            box(title = "Sleep Time Histogram", width = 6, plotOutput("sleep_plot")),
+            box(title = "Wake Time Histogram", width = 6, plotOutput("wake_plot"))
+        )
+    )
 )
