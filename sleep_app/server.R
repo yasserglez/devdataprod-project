@@ -44,7 +44,8 @@ shinyServer(function(input, output, session) {
 
     output$duration_plot <- renderPlot({
         ggplot(plot_data(), aes(x = date, y = duration)) +
-            geom_line(colour = "#367fa9", size = 1) +
+            geom_point(colour = "#1e282b", size = 3, shape = 1) +
+            geom_smooth(method = "loess", na.rm = TRUE, colour = "#367fa9") +
             labs(x = "Date", y = "Duration (hours)") +
             theme(axis.title.x = element_text(vjust = -0.25),
                   axis.title.y = element_text(vjust = 1))
