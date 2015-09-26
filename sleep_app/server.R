@@ -44,20 +44,29 @@ shinyServer(function(input, output, session) {
 
     output$duration_plot <- renderPlot({
         ggplot(plot_data(), aes(x = date, y = duration)) +
-            geom_line()
+            geom_line(colour = "#367fa9", size = 1) +
+            labs(x = "Date", y = "Duration (hours)") +
+            theme(axis.title.x = element_text(vjust = -0.25),
+                  axis.title.y = element_text(vjust = 1))
     })
 
     output$sleep_plot <- renderPlot({
-        ggplot(sleep_data, aes(x = sleep_time)) +
-            geom_histogram(binwidth = 60 * 60) +
+        ggplot(plot_data(), aes(x = sleep_time)) +
+            geom_histogram(colour = "#367fa9", fill = "#367fa9",
+                           binwidth = 60 * 60) +
             scale_x_datetime(breaks = date_breaks("1 hours"),
-                             labels = date_format("%l%p", tz = "UTC"))
+                             labels = date_format("%l%p", tz = "UTC")) +
+            labs(x = "Hour", y = "Count") +
+            theme(axis.title.x = element_text(vjust = -0.25))
     })
 
     output$wake_plot <- renderPlot({
-        ggplot(sleep_data, aes(x = wake_time)) +
-            geom_histogram(binwidth = 60 * 60) +
+        ggplot(plot_data(), aes(x = wake_time)) +
+            geom_histogram(colour = "#367fa9", fill = "#367fa9",
+                           binwidth = 60 * 60) +
             scale_x_datetime(breaks = date_breaks("1 hours"),
-                             labels = date_format("%l%p", tz = "UTC"))
+                             labels = date_format("%l%p", tz = "UTC")) +
+            labs(x = "Hour", y = "Count") +
+            theme(axis.title.x = element_text(vjust = -0.25))
     })
 })
