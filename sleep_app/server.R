@@ -27,9 +27,7 @@ sleep_data <- sleep_data %>%
     mutate(date = as.Date(sleep_time), # just the date
            wake_time = as.POSIXct(format(sleep_time + duration, "%H:%M"), format = "%H:%M", tz = "UTC"),
            sleep_time = as.POSIXct(format(sleep_time, "%H:%M"), format = "%H:%M", tz = "UTC"),
-           duration = duration / 60 / 60) %>% # convert to hours
-    # Add NA entries for the days without data.
-    right_join(data.frame(date = seq(min_date, max_date, by = "1 day")), by = "date")
+           duration = duration / 60 / 60) # convert to hours
 
 
 shinyServer(function(input, output, session) {
@@ -45,7 +43,7 @@ shinyServer(function(input, output, session) {
     output$duration_plot <- renderPlot({
         ggplot(plot_data(), aes(x = date, y = duration)) +
             geom_point(colour = "#1e282b", size = 3, shape = 1) +
-            geom_smooth(method = "loess", na.rm = TRUE, colour = "#367fa9") +
+            geom_smooth(method = "loess", colour = "#367fa9") +
             labs(x = "Date", y = "Duration (hours)") +
             theme(axis.title.x = element_text(vjust = -0.25),
                   axis.title.y = element_text(vjust = 1))
