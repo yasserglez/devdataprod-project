@@ -43,7 +43,7 @@ Created by [Yasser Gonzalez](http://yassergonzalez.com)
 ```{r sleep_duration, echo=FALSE, fig.width=10, fig.height=6}
 library("ggplot2")
 
-source("../sleep_app/sleep_data.R")
+source("../sleep_monitor/helpers.R", local = TRUE)
 
 ggplot(sleep_data, aes(x = date, y = duration)) +
     geom_point(colour = "#1e282b", size = 3, shape = 1) +
@@ -62,7 +62,7 @@ ggplot(sleep_data, aes(x = date, y = duration)) +
 <div style="height: 1em"></div>
 
 ### Shiny App
-[http://www.shinyapps.io/yasserglez](http://www.shinyapps.io/yasserglez)
+[https://yasserglez.shinyapps.io/sleep_monitor](https://yasserglez.shinyapps.io/sleep_monitor)
 
 <div style="height: 0.5em"></div>
 
